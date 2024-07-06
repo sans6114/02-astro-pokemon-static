@@ -1,0 +1,65 @@
+---
+import type { PokemonList } from "../../interfaces/pokemon-list.interface";
+import type { GetStaticPaths } from "astro";
+import Layout from "../../layout/layout.astro";
+import PokemonCard from "../../components/pokemon/PokemonCard.astro";
+
+export const getStaticPaths = (async () => {
+  const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+  const { results } = (await res.json()) as PokemonList;
+
+  const paths = results.map(({name, url}) => ({
+    params: { name },
+    props: { name, url },
+  }));
+
+  return paths;
+}) satisfies GetStaticPaths;
+
+const { name } = Astro.params;
+const { url } = Astro.props;
+
+const id = url.split("/").at(-2);
+const audioPokemon = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
+---
+
+<Layout title="name-of-pokemon">
+  <section class="mt-10 mx-10 flex flex-col justify-center items-center">
+    <div class="flex flex-col text-center items-center">
+      <a class="btn btn-outline btn-secondary" href="/"> Regresar </a>
+      <h1
+        class="my-2 hover:underline hover:text-blue-500 hover:cursor-pointer mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl"
+      >
+        {name}
+      </h1>
+    </div>
+
+    <div
+      class="p-10 m-5 bg-base-300 rounded-3xl flex flex-col items-center shadow-2xl"
+    >
+      <PokemonCard name={name} url={url} />
+      <h3
+        class="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-3xl underline"
+      >
+        #{id}
+        {name}
+      </h3>
+    </div>
+
+    <div class="flex flex-col items-center w-80">
+      <details class="collapse bg-base-200 flex flex-col items-start">
+        <summary class="collapse-title text-xl font-medium"
+          >Click to open audio of pokemon</summary
+        >
+        <div class="collapse-content">
+          <audio
+            class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            controls
+          >
+            <source src={audioPokemon} />
+          </audio>
+        </div>
+      </details>
+    </div>
+  </section>
+</Layout>

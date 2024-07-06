@@ -1,0 +1,48 @@
+---
+
+interface Props {
+    title: String,
+}
+
+const {title} = Astro.props
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<main>
+			<div class="drawer">
+				<input id="my-drawer" type="checkbox" class="drawer-toggle" />
+				<div class="drawer-content">
+				  <!-- Page content here -->
+				  
+				   <label for="my-drawer" class="drawer-button cursor-pointer">
+					<svg 
+					class="w-[40px]"
+					viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 6H20M4 12H14M4 18H9" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+						
+						</label>
+			
+	
+				  <section class="w-screen min-h-screen">
+					<slot/>
+				  </section>
+				</div>
+				<div class="drawer-side">
+				  <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+				  <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+					<!-- Sidebar content here -->
+					<li><a>Sidebar Item 1</a></li>
+					<li><a>Sidebar Item 2</a></li>
+				  </ul>
+				</div>
+			  </div>
+		</main>
+	</body>
+</html>
