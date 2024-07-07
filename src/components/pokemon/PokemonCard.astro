@@ -1,21 +1,43 @@
 ---
 interface Props {
   url: String;
-  name: String;
+  name?: String;
+  isBig?: boolean;
 }
 
-const { url, name } = Astro.props;
+const { url, name, isBig = false } = Astro.props;
 const id = url.split("/").at(-2);
 const urlImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`;
 ---
 
 <a
-href={`/pokemons/${name}`}
- class="card bg-base-100 w-64 shadow-xl my-5 border p-3 text-center">
+  href={`/pokemons/${name}`}
+  class:list={["isNotBig card w-64", { isBig: isBig }]}
+>
   <div class="card-body">
-    <h3 class="card-title font-bold">{name}</h3>
+    <h3 class="card-title font-bold text-center">{name}</h3>
   </div>
   <figure>
-    <img class="w-[150px] py-2" src={urlImage} alt="{name}" />
+    <img
+      transition:name="{`${name}-image`}"
+      class:list={[
+        "py-2 w-[150px] h-[150px]",
+        {
+          "py-2 w-[300px] h-[300px]": isBig,
+        },
+      ]}
+      src={urlImage}
+      alt="{name}"
+    />
   </figure>
 </a>
+
+<style>
+  .isBig {
+    @apply drop-shadow-2xl w-[700px] bg-base-100 my-5 p-3;
+  }
+
+  .isNotBig {
+    @apply bg-base-100 shadow-xl my-5 border p-3;
+  }
+</style>
