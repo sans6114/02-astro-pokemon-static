@@ -20,11 +20,11 @@ const data = (await res.json()) as PokemonList;
         <p
           class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 text-center"
         >
-          This project involves learning about the Astro framework while
-          integrating data from a Pokémon API. By exploring Astro's capabilities
-          in building web applications, alongside extracting and displaying
-          Pokémon data dynamically, this endeavor aims to blend technical skill
-          development with thematic creativity.
+        This project explores Astro framework and integrates Pokémon API data. It aims to develop web applications using Astro, dynamically displaying Pokémon data to blend technical skill with thematic creativity.
+
+
+
+
         </p>
         <div
           class="flex justify-center mt-10 animate-fade-down animate-infinite animate-duration-[2500ms]"
@@ -62,13 +62,13 @@ const data = (await res.json()) as PokemonList;
       </div>
     </div>
   </section>
-  <section class="flex flex-col items-center mt-[200px] bg-base-300 p-10 rounded-3xl mx-8 shadow-2xl">
+  <section class="flex flex-col items-center justify-center mt-[200px] bg-base-300 md:p-10 rounded-3xl md:mx-8 shadow-2xl">
     <h2
-      class="mb-10 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+      class="py-4 mb-10 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
     >
       List of pokemons
     </h2>
-    <ul class="grid grid-cols-1 sm:grid-cols-5 md:grid-cols-5 gap-4">
+    <ul class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-5 md:gap-5 w-full">
       {
         data.results.map((pokemon) => (
           <PokemonCard name={pokemon.name} url={pokemon.url} />
@@ -77,3 +77,4 @@ const data = (await res.json()) as PokemonList;
     </ul>
   </section>
 </Layout>
+

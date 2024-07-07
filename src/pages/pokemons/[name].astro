@@ -8,7 +8,6 @@ export const getStaticPaths = (async () => {
   const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
   const { results } = (await res.json()) as PokemonList;
 
-
   const paths = results.map(({ name, url }) => ({
     params: { name },
     props: { name, url },
@@ -22,17 +21,21 @@ const { url } = Astro.props;
 
 const id = url.split("/").at(-2);
 const audioPokemon = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
-const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`
+const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`;
 ---
 
 <Layout
- title={`Pokémon - #${id} ${name}`}
- description={`Información sobre el pokémon ${name}`}
- image={imgPokemon}
- >
+  title={`Pokémon - #${id} ${name}`}
+  description={`Información sobre el pokémon ${name}`}
+  image={imgPokemon}
+>
   <section class="mt-10 md:mx-10 flex flex-col items-center p-2 w-full gap-20">
-    <div class="flex flex-col text-center justify-center mx-auto items-center w-full">
-      <a class="btn btn-outline btn-secondary md:w-96 my-2" href="/"> Regresar </a>
+    <div
+      class="flex flex-col text-center justify-center mx-auto items-center w-full"
+    >
+      <a class="btn btn-outline btn-secondary md:w-96 my-2" href="/">
+        Regresar
+      </a>
       <h1
         class="my-2 hover:underline hover:text-blue-500 hover:cursor-pointer mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl"
       >
@@ -41,30 +44,35 @@ const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/spr
     </div>
 
     <div class="flex flex-col md:flex-row items-center md:justify-start gap-5">
-      <div class="order-2 md:order-1 flex justify-center w-[400px] md:w-full">
+      <div class="order-2 md:order-1 flex justify-center w-[300px] md:w-full">
         <PokemonCard url={url} isBig={true} />
       </div>
-      <div class="text-center md:text-start flex order-1 md:order:2 flex-col md:self-center w-2/4 md:w-full px-2 md:px-10 md:py-20 rounded-2xl">
+      <div
+        class="text-center md:text-start flex order-1 md:order:2 flex-col md:self-start w-2/4 md:w-full px-2 md:px-10 md:py-20 rounded-2xl"
+      >
         <h3
-          class="animate-fade-right animate-duration-[2000ms] animate-ease-linear animate-fill-both my-2 hover:underline hover:text-blue-500 hover:cursor-pointer mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-5xl"
+          class="animate-fade-right animate-duration-[2000ms] animate-ease-linear animate-fill-both my-2 hover:underline hover:text-blue-500 hover:cursor-pointer mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-5xl"
         >
-          #{id}
-          {name}
+          #{id} {name}
         </h3>
-        <details class="collapse bg-base-200 flex flex-col items-start h-30">
-          <summary class="collapse-title text-xl font-medium"
-            >Click to open audio of pokemon</summary
-          >
-          <div class="collapse-content">
-            <audio
-              class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-              controls
-            >
-              <source src={audioPokemon} />
-            </audio>
-          </div>
-        </details>
       </div>
     </div>
+    <div
+  class="fixed bottom-0 left-0 z-50 grid w-full h-auto px-8 bg-white border-t border-gray-200 md:grid-cols-3 dark:bg-gray-700 dark:border-gray-600"
+>
+  <div class="items-center justify-center mx-auto flex p-4">
+    <img class="w-12" src={imgPokemon} alt={name} />
+    <span class="mx-2 text-xl font-semibold text-gray-500 dark:text-gray-400"
+      >{name} Audio</span
+    >
+  </div>
+  <div class="flex items-center mx-auto p-2">
+    <audio class="rounded-xl flex justify-center" controls>
+      <source src={audioPokemon} />
+    </audio>
+  </div>
+</div>
+
   </section>
 </Layout>
+
