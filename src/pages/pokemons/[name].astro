@@ -1,8 +1,10 @@
 ---
 import type { PokemonList } from "../../interfaces/pokemon-list.interface";
 import type { GetStaticPaths } from "astro";
+import Title from "../../components/common/Title.astro";
 import Layout from "../../layout/layout.astro";
 import PokemonCard from "../../components/pokemon/PokemonCard.astro";
+import { Icon } from "astro-icon/components";
 
 export const getStaticPaths = (async () => {
   const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
@@ -18,7 +20,6 @@ export const getStaticPaths = (async () => {
 
 const { name } = Astro.params;
 const { url } = Astro.props;
-
 const id = url.split("/").at(-2);
 const audioPokemon = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
 const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`;
@@ -33,9 +34,12 @@ const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/spr
     <div
       class="flex flex-col text-center justify-center mx-auto items-center w-full"
     >
-      <a class="btn btn-outline btn-secondary md:w-96 my-2" href="/">
+      <button
+        onclick="history.back()"
+        class="btn btn-outline btn-secondary md:w-96 my-2"
+      >
         Regresar
-      </a>
+      </button>
       <h1
         class="my-2 hover:underline hover:text-blue-500 hover:cursor-pointer mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl"
       >
@@ -48,31 +52,59 @@ const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/spr
         <PokemonCard url={url} isBig={true} />
       </div>
       <div
-        class="text-center md:text-start flex order-1 md:order:2 flex-col md:self-start w-2/4 md:w-full px-2 md:px-10 md:py-20 rounded-2xl"
+        class="text-center md:text-start flex order-1 md:order:2 md:self-start md:w-full px-2 md:px-10 md:py-20 rounded-2xl"
       >
-        <h3
-          class="animate-fade-right animate-duration-[2000ms] animate-ease-linear animate-fill-both my-2 hover:underline hover:text-blue-500 hover:cursor-pointer mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-5xl"
-        >
-          #{id} {name}
-        </h3>
+        <Title>#{id}-{name}</Title>
+        <button id="btn-favorite" class="mx-4" data-name={name} data-id={id}>
+          <Icon name="heart-outline" size={50} />
+          <Icon class="hidden" name="heart-full" size={50} />
+        </button>
       </div>
     </div>
     <div
-  class="fixed bottom-0 left-0 z-50 grid w-full h-auto px-8 bg-white border-t border-gray-200 md:grid-cols-3 dark:bg-gray-700 dark:border-gray-600"
->
-  <div class="items-center justify-center mx-auto flex p-4">
-    <img class="w-12" src={imgPokemon} alt={name} />
-    <span class="mx-2 text-xl font-semibold text-gray-500 dark:text-gray-400"
-      >{name} Audio</span
+      class="fixed bottom-0 left-0 z-50 grid w-full h-auto px-8 bg-white border-t border-gray-200 md:grid-cols-3 dark:bg-gray-700 dark:border-gray-600"
     >
-  </div>
-  <div class="flex items-center mx-auto p-2">
-    <audio class="rounded-xl flex justify-center" controls>
-      <source src={audioPokemon} />
-    </audio>
-  </div>
-</div>
-
+      <div class="items-center justify-center mx-auto flex p-4">
+        <img class="w-12" src={imgPokemon} alt={name} />
+        <span
+          class="mx-2 text-xl font-semibold text-gray-500 dark:text-gray-400"
+          >{name} Audio</span
+        >
+      </div>
+      <div class="flex items-center mx-auto p-2">
+        <audio class="rounded-xl flex justify-center" controls>
+          <source src={audioPokemon} />
+        </audio>
+      </div>
+    </div>
   </section>
 </Layout>
 
+<script>
+  interface favoritePokemon {
+    name: string;
+    id: Number;
+  }
+
+  document.addEventListener('astro:page-load', () => {
+
+
+    const buttonFav = document.querySelector('#btn-favorite') as HTMLButtonElement;
+
+    if (!buttonFav) return; // Opcional: Manejar el caso en que no se encuentra el botón
+
+    const name = buttonFav.dataset.name;
+    const id = Number(buttonFav.dataset.id);
+
+    buttonFav.addEventListener("click", () => {
+      console.log(name, id);
+    });
+  });
+  //console.log(name, id) // Output: name of pokemon
+</script>
+
+<style>
+  #btn-favorite {
+    @apply hover:animate-pulse;
+  }
+</style>
