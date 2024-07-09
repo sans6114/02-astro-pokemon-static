@@ -86,10 +86,10 @@ const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/spr
     id: Number;
   }
 
-  document.addEventListener('astro:page-load', () => {
-
-
-    const buttonFav = document.querySelector('#btn-favorite') as HTMLButtonElement;
+  const handlePageLoad = () => {
+    const buttonFav = document.querySelector(
+      "#btn-favorite"
+    ) as HTMLButtonElement;
 
     if (!buttonFav) return; // Opcional: Manejar el caso en que no se encuentra el botón
 
@@ -97,9 +97,11 @@ const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/spr
     const id = Number(buttonFav.dataset.id);
 
     buttonFav.addEventListener("click", () => {
-      console.log(name, id);
+      console.log({ name, id });
     });
-  });
+  };
+
+  document.addEventListener("astro:page-load", handlePageLoad);
   //console.log(name, id) // Output: name of pokemon
 </script>
 
