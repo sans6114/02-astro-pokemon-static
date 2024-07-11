@@ -56,8 +56,8 @@ const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/spr
       >
         <Title>#{id}-{name}</Title>
         <button id="btn-favorite" class="mx-4" data-name={name} data-id={id}>
-          <Icon name="heart-outline" size={50} />
-          <Icon class="hidden" name="heart-full" size={50} />
+          <Icon data-outline name="heart-outline" size={50} />
+          <Icon data-full class="hidden" name="heart-full" size={50} />
         </button>
       </div>
     </div>
@@ -81,32 +81,79 @@ const imgPokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/spr
 </Layout>
 
 <script>
-  interface favoritePokemon {
-    name: string;
-    id: Number;
-  }
+  import { type PokemonFavorite } from '../../interfaces/favorite-pokemon';
 
   const handlePageLoad = () => {
+    let favoritePokemons: PokemonFavorite[] = JSON.parse(
+      localStorage.getItem("favorites") ?? "[]"
+    );
+    //console.log(favoritePokemons)
+
     const buttonFav = document.querySelector(
       "#btn-favorite"
     ) as HTMLButtonElement;
 
     if (!buttonFav) return; // Opcional: Manejar el caso en que no se encuentra el botón
 
-    const name = buttonFav.dataset.name;
-    const id = Number(buttonFav.dataset.id);
+    const name = buttonFav.dataset.name ?? '';
+    const id = Number(buttonFav.dataset.id) ?? '';
+    const isFavorite = favoritePokemons.some((pokemon) => pokemon.name === name)
+    const heartOutline = buttonFav.querySelector(
+      "[data-outline]"
+    ) as HTMLElement;
+    const heartfull = buttonFav.querySelector("[data-full]") as HTMLElement;
+
+    //TODO: hacer funcion que verifique si el pokemon existe en el local storage y a partir de eso mostrar o no el corazon lleno/vacio
+
+  const toggleHeart = () => {
+  // si esto da true, el pokemon de la pagina ya existe y esta en el local storage, y lo contrario si da false
+  if(isFavorite){
+    heartOutline.classList.add('hidden')
+    heartfull.classList.remove('hidden');
+  } else {
+    heartfull.classList.add('hidden');
+  }
+
+
+
+  }
+
+
+
+
+    const toggleFavorite = () => {
+      const isFavorite = favoritePokemons.some((pokemon) => pokemon.name === name)
+
+
+      if (isFavorite){
+        //remover
+        favoritePokemons = favoritePokemons.filter( fav => fav.name !== name)
+      }else {
+        //agregar
+
+        favoritePokemons.push({
+          id: +id,
+          name: name
+        })
+      }
+
+
+      localStorage.setItem('favorites', JSON.stringify(favoritePokemons))
+    }
 
     buttonFav.addEventListener("click", () => {
-      console.log({ name, id });
+      //hacer toggle, como lo hago?
+      heartOutline.classList.toggle("hidden");
+      heartfull.classList.toggle("hidden");
+      //console.log({ name, id, heartOutline, heartfull });
+
+      toggleFavorite()
     });
+    toggleHeart()
   };
 
   document.addEventListener("astro:page-load", handlePageLoad);
   //console.log(name, id) // Output: name of pokemon
 </script>
 
-<style>
-  #btn-favorite {
-    @apply hover:animate-pulse;
-  }
-</style>
+<style></style>

@@ -1,0 +1,30 @@
+---
+import { Counter } from "../../components/common/Counter";
+import Layout from "../../layout/layout.astro";
+import type { PokemonList } from "../../interfaces/pokemon-list.interface";
+
+import Title from "../../components/common/Title.astro";
+
+const counterValue = 25;
+---
+
+<Layout title="favourites-pokémon">
+  <Title> Your favourite pokémons </Title>
+
+  <div class="h-[2000px] bg-blue-200 rounded-xl">
+
+  </div>
+
+  <Counter
+  transition:persist="counter"
+  transition:persist-props
+  client:visible initValue={counterValue} >
+  <Title>My counter</Title>
+</Counter>
+
+  <style>
+    .disabled {
+      @apply bg-gray-400 text-gray-500;
+    }
+  </style>
+</Layout>

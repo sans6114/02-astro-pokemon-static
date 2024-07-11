@@ -1,5 +1,5 @@
 ---
-
+import { favoritePokemon } from "../../components/pokemon/Favorites";
 import Layout from "../../layout/layout.astro";
 import type { PokemonList } from "../../interfaces/pokemon-list.interface";
 import PokemonCard from "../../components/pokemon/PokemonCard.astro";
@@ -11,20 +11,17 @@ const data = (await res.json()) as PokemonList;
 ---
 
 <Layout title="favourites-pokémon">
-  <section
-    class="flex flex-col items-center justify-center mt-[200px] bg-base-300 md:p-10 rounded-3xl md:mx-8 shadow-2xl"
-  >
-    <Title> Your favourite pokémons </Title>
-    
-    
-    <ul class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-5 md:gap-5 w-full">
-        {
-          data.results.map((pokemon) => (
-            <PokemonCard name={pokemon.name} url={pokemon.url} />
-          ))
-        }
-      </ul>
-  </section>
+  <Title > Your favourite pokémons </Title>
+
+
+<favoritePokemon
+client:only="solid-js"
+<Title>My favorite pokemons</Title>
+</favoritePokemon>
+
+<!--<video controls="" autoplay="" transition:persist>
+  <source src="https://ia804502.us.archive.org/33/items/GoldenGa1939_3/GoldenGa1939_3_512kb.mp4" type="video/mp4">
+</video> -->
 </Layout>
 
 <style>
