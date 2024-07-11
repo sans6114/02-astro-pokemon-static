@@ -20,7 +20,7 @@ interface Props {
     children?: JSX.Element
 }
 
-export const favoritePokemon: Component<Props> = (props) => {
+export const FavoritePokemon: Component<Props> = (props) => {
 
 
     const [PokemonsFavorite, setPokemons] = createSignal(getLocalStoragePokemon())
